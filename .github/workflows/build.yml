@@ -23,9 +23,8 @@ jobs:
         with:
           arguments: build
 
-
       - name: Upload
-      - uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: majobroom
           path: build/libs/*.jar
