@@ -1,23 +1,19 @@
 package com.innky.majobroom.utills;
 
 import com.google.gson.Gson;
-import com.innky.majobroom.MajoBroom;
+import com.innky.majobroom.ModMajoBroom;
 import com.innky.majobroom.jsonbean.GeomtryBean;
 import com.innky.majobroom.jsonbean.ModelBean;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.packs.resources.ResourceManager;
-import net.minecraft.resources.ResourceLocation;
 
-import java.io.*;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Enumeration;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class ModelJsonReader {
-    public static GeomtryBean readJson(String path){
-        ResourceManager resourceManager = Minecraft.getInstance()
-                .getResourceManager();
+    public static GeomtryBean readJson(String path) {
 //            URL a  = MajoBroom.class.getClassLoader().getResource("/assets/majobroom/textures/entity");
 //
 //            File file = new File(String.valueOf(a));
@@ -28,10 +24,10 @@ public class ModelJsonReader {
 //                    .getResourceManager()
 //                    .getResource( new ResourceLocation( "majobroom", path ) )
 //                    .getInputStream());
-            InputStream in = MajoBroom.class.getClassLoader().getResourceAsStream("/assets/majobroom/"+path+".json");
+            InputStream in = ModMajoBroom.class.getClassLoader().getResourceAsStream("/assets/majobroom/" + path + ".json");
 
 
-            if (in!=null){
+            if (in != null) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
                 StringBuffer stringBuffer = new StringBuffer();
                 String temp = "";

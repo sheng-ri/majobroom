@@ -4,12 +4,9 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "majobroom.refmap.json",
   "mixins": [
-    "EntityMixin",
-    "MinecraftMixin",
     "PlayerMixin"
   ],
   "client": [
-    "MinecraftMixin"
   ],
   "minVersion": "0.8",
   "injectors": {

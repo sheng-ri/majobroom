@@ -1,55 +1,58 @@
 package com.innky.majobroom.network;
 
-import com.innky.majobroom.entity.MajoBroom;
+import com.innky.majobroom.ModMajoBroom;
+import com.innky.majobroom.entity.MajoBroomEntity;
 import com.innky.majobroom.registry.EntityTypeRegistry;
 import com.innky.majobroom.registry.ItemRegistry;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.network.NetworkEvent;
+import net.neoforged.neoforge.network.handling.PlayPayloadContext;
 
-import java.util.function.Supplier;
+public record SummonBroomPack() implements CustomPacketPayload {
 
-public class SummonBroomPack {
-    public SummonBroomPack(FriendlyByteBuf packetBuffer){
+    static final ResourceLocation ID = new ResourceLocation(ModMajoBroom.MODID, "summon_broom");
 
-
-    }
-    public SummonBroomPack(){
+    public SummonBroomPack(FriendlyByteBuf buf) {
+        this();
     }
 
-    public void toBytes(FriendlyByteBuf buf) {
+    @Override
+    public void write(FriendlyByteBuf pBuffer) {
 
     }
-    public void handler(Supplier<NetworkEvent.Context> ctx) {
-        ctx.get().enqueueWork(() -> {
 
-            Player playerEntity = ctx.get().getSender();
-            if (playerEntity != null ){
-                if (!playerEntity.isPassenger()){
-                    for (ItemStack item:playerEntity.getInventory().items) {
-                        if (item.is(ItemRegistry.broomItem.get()) || playerEntity.isCreative()){
-                            summonBroom(playerEntity,item);
-                            break;
-                        }
+    @Override
+    public ResourceLocation id() {
+        return ID;
+    }
+
+    public static void handle(SummonBroomPack summonBroomPack, PlayPayloadContext ctx) {
+        if (ctx.player().isEmpty()) return;
+
+        // main thread
+        ctx.workHandler().submitAsync(() -> {
+            final var player = ctx.player().get();
+            if (!player.isPassenger()) {
+                for (ItemStack item : player.getInventory().items) {
+                    if (item.is(ItemRegistry.broomItem.get()) || player.isCreative()) {
+                        summonBroom(player, item);
+                        break;
                     }
                 }
             }
         });
-        ctx.get().setPacketHandled(true);
     }
-    private void summonBroom(Player playerEntity,ItemStack itemStack){
-        MajoBroom broomEntity = new MajoBroom(EntityTypeRegistry.majoBroom.get(), playerEntity.level);
+
+    private static void summonBroom(Player playerEntity, ItemStack itemStack) {
+        MajoBroomEntity broomEntity = new MajoBroomEntity(EntityTypeRegistry.majoBroom.get(), playerEntity.level());
 //        broomEntity.setYHeadRot(playerEntity.getYHeadRot());
         broomEntity.setYRot(playerEntity.getYRot());
         broomEntity.setPos(playerEntity.getX(), playerEntity.getY(), playerEntity.getZ());
         broomEntity.setControlMode(itemStack.getOrCreateTag().getBoolean("controlMode"));
-        playerEntity.level.addFreshEntity(broomEntity);
+        playerEntity.level().addFreshEntity(broomEntity);
         if (!playerEntity.isCreative()) {
             itemStack.shrink(1);
         }

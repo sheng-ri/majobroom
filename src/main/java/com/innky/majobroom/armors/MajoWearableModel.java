@@ -21,11 +21,11 @@ public class MajoWearableModel extends HumanoidModel<LivingEntity> {
     public final ModelPart base;
     private final String model_name;
     private final Map<String, PartDefinition> bones = new HashMap();
-    private final HashMap<String, GeomtryBean.BonesBean> bonesBean = new HashMap();
+    private final Map<String, GeomtryBean.BonesBean> bonesBean = new HashMap();
 
 
     public MajoWearableModel(String name) {
-        super(HumanoidModel.createMesh(CubeDeformation.NONE,0f).getRoot().bake(256,256));
+        super(HumanoidModel.createMesh(CubeDeformation.NONE, 0f).getRoot().bake(256, 256));
         this.base = getTexturedModelData(name).bakeRoot();
         this.model_name = name;
 
@@ -90,7 +90,6 @@ public class MajoWearableModel extends HumanoidModel<LivingEntity> {
             return cubes.getOrigin().get(index) - bones.getPivot().get(index);
         }
     }
-
 
 
     @Override
@@ -159,9 +158,8 @@ public class MajoWearableModel extends HumanoidModel<LivingEntity> {
     }*/
 
 
-
     public LayerDefinition getTexturedModelData(String path) {
-        GeomtryBean model =  ModelJsonReader.readJson("jsonmodels/"+path);
+        GeomtryBean model = ModelJsonReader.readJson("jsonmodels/" + path);
 
 
         MeshDefinition modelData = new MeshDefinition();
@@ -176,7 +174,7 @@ public class MajoWearableModel extends HumanoidModel<LivingEntity> {
 
             for (GeomtryBean.BonesBean bone : model.getBones()) {
                 CubeListBuilder newBone = CubeListBuilder.create();
-                float x=0,y=0,z=0;
+                float x = 0, y = 0, z = 0;
                 if (bone.getRotation() != null) {
                     x = 0.017453F * (Float) bone.getRotation().get(0);
                     y = 0.017453F * (Float) bone.getRotation().get(1);
@@ -185,7 +183,7 @@ public class MajoWearableModel extends HumanoidModel<LivingEntity> {
 
                 if (bone.getCubes() != null) {
                     for (GeomtryBean.BonesBean.CubesBean cube : bone.getCubes()) {
-                        newBone.texOffs((Integer) cube.getUv().get(0), (Integer) cube.getUv().get(1)).addBox(this.convertOrigin(bone, cube, 0), this.convertOrigin(bone, cube, 1), this.convertOrigin(bone, cube, 2), (Float) cube.getSize().get(0), (Float) cube.getSize().get(1), (Float) cube.getSize().get(2),new CubeDeformation(cube.getInflate()));
+                        newBone.texOffs((Integer) cube.getUv().get(0), (Integer) cube.getUv().get(1)).addBox(this.convertOrigin(bone, cube, 0), this.convertOrigin(bone, cube, 1), this.convertOrigin(bone, cube, 2), (Float) cube.getSize().get(0), (Float) cube.getSize().get(1), (Float) cube.getSize().get(2), new CubeDeformation(cube.getInflate()));
                     }
                 }
 
@@ -193,10 +191,10 @@ public class MajoWearableModel extends HumanoidModel<LivingEntity> {
 
                 if (bone.getParent() != null) {
                     GeomtryBean.BonesBean parent = (GeomtryBean.BonesBean) this.bonesBean.get(bone.getParent());
-                    ((PartDefinition) this.bones.get(bone.getParent())).addOrReplaceChild(bone.getName(),newBone,PartPose.offsetAndRotation((Float) bone.getPivot().get(0) - (Float) parent.getPivot().get(0), (Float) parent.getPivot().get(1) - (Float) bone.getPivot().get(1), (Float) bone.getPivot().get(2) - (Float) parent.getPivot().get(2),x,y,z));
+                    ((PartDefinition) this.bones.get(bone.getParent())).addOrReplaceChild(bone.getName(), newBone, PartPose.offsetAndRotation((Float) bone.getPivot().get(0) - (Float) parent.getPivot().get(0), (Float) parent.getPivot().get(1) - (Float) bone.getPivot().get(1), (Float) bone.getPivot().get(2) - (Float) parent.getPivot().get(2), x, y, z));
                     nnnn = ((PartDefinition) this.bones.get(bone.getParent())).getChild(bone.getName());
                 } else {
-                    modelPartData.addOrReplaceChild(bone.getName(),newBone, PartPose.offsetAndRotation((Float) bone.getPivot().get(0), 24.0F - (Float) bone.getPivot().get(1), (Float) bone.getPivot().get(2),x,y,z));
+                    modelPartData.addOrReplaceChild(bone.getName(), newBone, PartPose.offsetAndRotation((Float) bone.getPivot().get(0), 24.0F - (Float) bone.getPivot().get(1), (Float) bone.getPivot().get(2), x, y, z));
                     nnnn = modelPartData.getChild(bone.getName());
                 }
 
@@ -207,9 +205,6 @@ public class MajoWearableModel extends HumanoidModel<LivingEntity> {
 
         return LayerDefinition.create(modelData, model.getTexturewidth(), model.getTextureheight());
     }
-
-
-
 
 
 }

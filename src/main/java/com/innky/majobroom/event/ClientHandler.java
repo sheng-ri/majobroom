@@ -1,29 +1,31 @@
-package com.innky.majobroom.events;
+package com.innky.majobroom.event;
 
-import com.innky.majobroom.entity.MajoBroom;
+import com.innky.majobroom.entity.MajoBroomEntity;
 import com.innky.majobroom.sound.FlyingSound;
 import com.innky.majobroom.utills.Config;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.event.entity.EntityMountEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.neoforge.event.entity.EntityMountEvent;
 
-@Mod.EventBusSubscriber( value = Dist.CLIENT)
+
+@SuppressWarnings("unused")
+@Mod.EventBusSubscriber(Dist.CLIENT)
 public class ClientHandler {
     @SubscribeEvent
-    public static void entityMountHandler(EntityMountEvent event){
-        if(event.getEntityBeingMounted() instanceof MajoBroom broom && event.getLevel().isClientSide) {
+    public static void entityMountHandler(EntityMountEvent event) {
+        if (event.getEntityBeingMounted() instanceof MajoBroomEntity broom && event.getLevel().isClientSide) {
             if (event.isMounting()) {
 
-                if(Minecraft.getInstance().player != null) {
+                if (Minecraft.getInstance().player != null) {
                     if (event.getEntityMounting().getUUID() == Minecraft.getInstance().player.getUUID()) {
                         if (Config.AUTO_PERSPECTIVE.get()) {
                             Minecraft.getInstance().options.setCameraType(CameraType.THIRD_PERSON_BACK);
                         }
                         broom.hasPassenger = true;
-                        Minecraft.getInstance().getSoundManager().play(new FlyingSound(broom ));
+                        Minecraft.getInstance().getSoundManager().play(new FlyingSound(broom));
 
                     }
                 }
@@ -32,7 +34,7 @@ public class ClientHandler {
                     if (event.getEntityMounting().getUUID() == Minecraft.getInstance().player.getUUID()) {
                         Minecraft.getInstance().options.setCameraType(CameraType.FIRST_PERSON);
                     }
-                    ((MajoBroom) event.getEntityBeingMounted()).hasPassenger = false;
+                    ((MajoBroomEntity) event.getEntityBeingMounted()).hasPassenger = false;
                 }
             }
         }

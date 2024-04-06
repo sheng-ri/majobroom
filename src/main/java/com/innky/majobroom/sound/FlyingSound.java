@@ -1,23 +1,22 @@
 package com.innky.majobroom.sound;
 
-import com.innky.majobroom.entity.MajoBroom;
+import com.innky.majobroom.entity.MajoBroomEntity;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
-//import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 @OnlyIn(Dist.CLIENT)
 
 public class FlyingSound extends AbstractTickableSoundInstance {
-    private final MajoBroom broom;
+    private final MajoBroomEntity broom;
     private int time;
 
 
-    public FlyingSound(MajoBroom player) {
+    public FlyingSound(MajoBroomEntity player) {
         super(SoundEvents.ELYTRA_FLYING, SoundSource.PLAYERS, SoundInstance.createUnseededRandom());
         this.broom = player;
         this.looping = true;
@@ -30,11 +29,11 @@ public class FlyingSound extends AbstractTickableSoundInstance {
         ++this.time;
 //        System.out.println(time);
         if (this.broom.isAlive() && broom.hasPassenger) {
-            this.x = (double)((float)this.broom.getX());
-            this.y = (double)((float)this.broom.getY());
-            this.z = (double)((float)this.broom.getZ());
-            float f = (float)this.broom.getDeltaMovement().lengthSqr();
-            if ((double)f >= 1.0E-7D) {
+            this.x = this.broom.getX();
+            this.y = this.broom.getY();
+            this.z = this.broom.getZ();
+            float f = (float) this.broom.getDeltaMovement().lengthSqr();
+            if (f >= 1.0E-7D) {
                 this.volume = Mth.clamp(f / 4.0F, 0.0F, 1.0F);
             } else {
                 this.volume = 0.0F;
@@ -43,10 +42,9 @@ public class FlyingSound extends AbstractTickableSoundInstance {
             if (this.time < 20) {
                 this.volume = 0.0F;
             } else if (this.time < 40) {
-                this.volume = (float)((double)this.volume * ((double)(this.time - 20) / 20.0D));
+                this.volume = (float) ((double) this.volume * ((double) (this.time - 20) / 20.0D));
             }
 
-            float f1 = 0.8F;
             if (this.volume > 0.8F) {
                 this.pitch = 1.0F + (this.volume - 0.8F);
             } else {
@@ -54,7 +52,6 @@ public class FlyingSound extends AbstractTickableSoundInstance {
             }
 
         } else {
-//            System.out.println("stoped");
             this.stop();
         }
 
