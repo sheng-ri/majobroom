@@ -9,7 +9,6 @@ The source by me(BirthCat) is MIT License.
 MIT License
 
 Copyright (c) 2024 BirthCat
-Copyright (c) 2023 NeoForged project
 
 This license applies to the template files as supplied by github.com/NeoForged/MDK
 
