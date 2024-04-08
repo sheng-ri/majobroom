@@ -1,11 +1,8 @@
 package com.innky.majobroom.utills;
 
 import com.google.gson.Gson;
-import com.innky.majobroom.ModMajoBroom;
 import com.innky.majobroom.jsonbean.GeomtryBean;
 import com.innky.majobroom.jsonbean.ModelBean;
-import net.minecraft.client.Minecraft;
-import net.minecraft.server.packs.resources.ResourceManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,18 +21,18 @@ public class ModelJsonReader {
 //                    .getResourceManager()
 //                    .getResource( new ResourceLocation( "majobroom", path ) )
 //                    .getInputStream());
-            InputStream in = ModMajoBroom.class.getClassLoader().getResourceAsStream("/assets/majobroom/" + path + ".json");
+            InputStream in = ModelJsonReader.class.getResourceAsStream("/assets/majobroom/" + path + ".json");
 
 
             if (in != null) {
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
-                StringBuffer stringBuffer = new StringBuffer();
-                String temp = "";
+                var builder = new StringBuilder();
+                String temp;
 
                 while ((temp = bufferedReader.readLine()) != null) {
-                    stringBuffer.append(temp);
+                    builder.append(temp);
                 }
-                String presonsString = stringBuffer.toString();
+                String presonsString = builder.toString();
                 Gson gson = new Gson();
                 ModelBean fromJson = gson.fromJson(presonsString,
                         ModelBean.class);

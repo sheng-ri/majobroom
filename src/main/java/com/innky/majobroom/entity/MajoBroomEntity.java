@@ -5,10 +5,8 @@ import com.innky.majobroom.armors.MajoWearableItem;
 import com.innky.majobroom.network.RidePack;
 import com.innky.majobroom.registry.ItemRegistry;
 import com.innky.majobroom.utills.Config;
-import net.minecraft.BlockUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
@@ -122,7 +120,7 @@ public class MajoBroomEntity extends Boat {
         Vec3 vector3d = this.getDeltaMovement();
         Vec3 v = new Vec3(vector3d.x * momentum, vector3d.y + d1, vector3d.z * momentum);
         this.setDeltaMovement(v);
-        this.deltaRotation *= 0.85;
+        this.deltaRotation *= 0.85F;
 
 
     }
@@ -146,7 +144,7 @@ public class MajoBroomEntity extends Boat {
             if (this.inputRight != this.inputLeft && !this.inputUp && !this.inputDown) {
                 f += 0.005F;
             }
-            double percent = entityData.get(configSpeed) / 100.0;
+//            double percent = entityData.get(configSpeed) / 100.0;
 
             this.yRot += this.deltaRotation;
             if (this.inputUp) {
@@ -157,7 +155,7 @@ public class MajoBroomEntity extends Boat {
                 f -= 0.01F * playerSpeed * 4;
             }
 
-            Vec3 v3d = this.getDeltaMovement().add((double) (Mth.sin(-this.yRot * ((float) Math.PI / 180F)) * f), 0.0D, (double) (Mth.cos(this.yRot * ((float) Math.PI / 180F)) * f));
+            Vec3 v3d = this.getDeltaMovement().add(Mth.sin(-this.yRot * ((float) Math.PI / 180F)) * f, 0.0D, (double) (Mth.cos(this.yRot * ((float) Math.PI / 180F)) * f));
             float currentY = (float) v3d.y;
             float maxYspeed = 0.3f * playerSpeed * 2;
             float yacc = 0.05f * playerSpeed * 1.5f;
@@ -205,12 +203,11 @@ public class MajoBroomEntity extends Boat {
 
     public void collision() {
         this.checkInsideBlocks();
-        List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate((double) 0.2F, (double) -0.01F, (double) 0.2F), EntitySelector.pushableBy(this));
+        List<Entity> list = this.level().getEntities(this, this.getBoundingBox().inflate(0.2F, -0.01F, 0.2F), EntitySelector.pushableBy(this));
         if (!list.isEmpty()) {
             boolean flag = !this.level().isClientSide && !(this.getControllingPassenger() instanceof Player);
 
-            for (int j = 0; j < list.size(); ++j) {
-                Entity entity = list.get(j);
+            for (Entity entity : list) {
                 if (!entity.hasPassenger(this)) {
                     if (flag && this.getPassengers().size() < 2 && !entity.isPassenger() && entity.getBbWidth() < this.getBbWidth() && entity instanceof LivingEntity && !(entity instanceof WaterAnimal) && !(entity instanceof Player)) {
                         entity.startRiding(this);
@@ -305,9 +302,10 @@ public class MajoBroomEntity extends Boat {
             if (v2.subtract(vector3d).lengthSqr() > 0.0001) {
                 this.setDeltaMovement(v2.z, v2.y, -v2.x);
 //                System.out.println(this.level().getBlockState(this.getPosition()).isSolid()+" "+this.getPosition());
-            } else {
-
             }
+//            else {
+
+//            }
 
 
         } else {
@@ -337,9 +335,9 @@ public class MajoBroomEntity extends Boat {
         } else {
             playerSpeed = 0.9f;
         }
-        serials += 0.05;
+        serials += 0.05F;
         if (serials > 6.28) {
-            serials -= 6.28;
+            serials -= 6.28F;
         }
 
         lastfl = fl;
@@ -348,17 +346,6 @@ public class MajoBroomEntity extends Boat {
     }
 
     private boolean hasMajoWearable;
-
-    @Override
-    public boolean canBeCollidedWith() {
-        return true;
-    }
-
-
-    @Override
-    protected Vec3 getRelativePortalPosition(Direction.Axis axis, BlockUtil.FoundRectangle result) {
-        return LivingEntity.resetForwardDirectionOfRelativePortalPosition(super.getRelativePortalPosition(axis, result));
-    }
 
     @Override
     public Vec3 getPassengerRidingPosition(Entity passenger) {
@@ -379,13 +366,13 @@ public class MajoBroomEntity extends Boat {
         passenger.setYBodyRot(this.yRot);
         return new Vec3(
                 this.getX(),
-                this.getY() + this.getMyRidingOffset(passenger) + passenger.getMyRidingOffset(passenger) + fl * 0.1 + 0.5,
+                this.getY() + this.getMyRidingOffset(passenger) + passenger.getMyRidingOffset(passenger) + fl * 0.1,
                 this.getZ());
     }
 
     @Override
     public float getMyRidingOffset(Entity pEntity) {
-        return 1;
+        return 1.3f;
     }
 
     @Override
@@ -397,9 +384,10 @@ public class MajoBroomEntity extends Boat {
                         PacketDistributor.SERVER.noArg().send(new RidePack(this.getId(), false));
                         this.level().playSound(player, player.blockPosition(), SoundEvents.ENDER_EYE_LAUNCH, SoundSource.NEUTRAL, 10F, 1f);
                         addParticle(this.level(), getX() - 0.5, getY() + 0.3, getZ() - 0.5, 30, 2, 1, ParticleTypes.SMOKE);
-                    } else {
-                        //                    Networking.INSTANCE.sendToServer(new ChangeBroomStatePack(this.getId(), true));
                     }
+//                    else {
+                        //                    Networking.INSTANCE.sendToServer(new ChangeBroomStatePack(this.getId(), true));
+//                    }
                 }
             }
 
@@ -437,8 +425,7 @@ public class MajoBroomEntity extends Boat {
     public InteractionResult interact(Player player, InteractionHand hand) {
 
         if (this.level().isClientSide) {
-            if (Minecraft.getInstance().options.keyShift.isDown()) {
-            } else {
+            if (!Minecraft.getInstance().options.keyShift.isDown()){
                 hasPassenger = true;
                 if (this.getPassengers().isEmpty()) {
                     assert Minecraft.getInstance().player != null;
@@ -451,14 +438,6 @@ public class MajoBroomEntity extends Boat {
         return InteractionResult.SUCCESS;
     }
 
-    public void setControls(boolean forward, boolean backward, boolean left, boolean right, boolean up, boolean down) {
-//        this.forward = forward;
-//        this.backward = backward;
-//        this.left = left;
-//        this.right = right;
-//        this.up = up;
-//        this.down = down;
-    }
 
     @OnlyIn(Dist.CLIENT)
     private void updateControl() {
@@ -475,7 +454,7 @@ public class MajoBroomEntity extends Boat {
             }
         } else {
 
-             up = down = false;
+            up = down = false;
         }
     }
 

@@ -14,8 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.client.extensions.common.IClientItemExtensions;
 import org.jetbrains.annotations.NotNull;
 
-import javax.annotation.Nullable;
-
 public class MajoWearableItem extends ArmorItem implements DyeableLeatherItem {
     public MajoWearableItem(ArmorMaterial materialIn, ArmorItem.Type slot, Properties builderIn) {
         super(materialIn, slot, builderIn);

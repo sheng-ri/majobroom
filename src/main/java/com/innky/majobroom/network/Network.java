@@ -4,6 +4,7 @@ import com.innky.majobroom.ModMajoBroom;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
 import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+
 @SuppressWarnings("unused")
 public class Network {
 
