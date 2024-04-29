@@ -1,4 +1,6 @@
-package com.innky.majobroom.armors;
+package com.innky.majobroom.item;
+
+import com.innky.majobroom.model.MajoWearableModel;
 
 import java.util.HashMap;
 import java.util.Map;

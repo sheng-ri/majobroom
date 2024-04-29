@@ -1,18 +1,17 @@
 package com.innky.majobroom.event;
 
-import com.innky.majobroom.entity.MajoBroomEntity;
+import com.innky.majobroom.MajoBroomEntity;
 import com.innky.majobroom.sound.FlyingSound;
 import com.innky.majobroom.utills.Config;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.entity.EntityMountEvent;
-
+import net.neoforged.fml.common.EventBusSubscriber;
 
 @SuppressWarnings("unused")
-@Mod.EventBusSubscriber(Dist.CLIENT)
+@EventBusSubscriber(Dist.CLIENT)
 public class ClientHandler {
     @SubscribeEvent
     public static void entityMountHandler(EntityMountEvent event) {

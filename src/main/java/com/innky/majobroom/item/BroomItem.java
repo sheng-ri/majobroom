@@ -3,7 +3,7 @@ package com.innky.majobroom.item;
 //import com.innky.majobroom.entity.MajoBroom;
 //import com.innky.majobroom.registry.EntityTypeRegistry;
 
-import com.innky.majobroom.entity.MajoBroomEntity;
+import com.innky.majobroom.MajoBroomEntity;
 import com.innky.majobroom.registry.EntityTypeRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -19,7 +19,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
+import static com.innky.majobroom.registry.ComponentsRegistry.CONTROL_MODE;
+
 public class BroomItem extends Item {
+
     public BroomItem(Properties properties) {
         super(properties);
     }
@@ -35,7 +38,7 @@ public class BroomItem extends Item {
             if (!worldIn.isClientSide) {
                 MajoBroomEntity broomEntity = new MajoBroomEntity(EntityTypeRegistry.majoBroom.get(), worldIn);
                 broomEntity.setPos(blockPos.getX() + 0.5, blockPos.getY() + 1.5, blockPos.getZ() + 0.5);
-                broomEntity.setControlMode(itemStack.getOrCreateTag().getBoolean("controlMode"));
+                broomEntity.setControlMode(itemStack.getOrDefault(CONTROL_MODE,false));
                 worldIn.addFreshEntity(broomEntity);
                 itemStack.shrink(1);
             }

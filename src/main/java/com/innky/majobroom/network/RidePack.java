@@ -1,50 +1,50 @@
 package com.innky.majobroom.network;
 
 import com.innky.majobroom.ModMajoBroom;
-import com.innky.majobroom.entity.MajoBroomEntity;
+import com.innky.majobroom.MajoBroomEntity;
 import com.innky.majobroom.registry.ItemRegistry;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.ByteBufCodecs;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import org.jetbrains.annotations.NotNull;
+
+import static com.innky.majobroom.registry.ComponentsRegistry.CONTROL_MODE;
 
 public record RidePack(int entityId, boolean isRide) implements CustomPacketPayload {
 
-    static final ResourceLocation ID = new ResourceLocation(ModMajoBroom.MODID, "ride_pack");
+    public static final Type<RidePack> TYPE = new Type<>(new ResourceLocation(ModMajoBroom.MODID, "ride_pack"));
 
-    public RidePack(FriendlyByteBuf buffer) {
-        this(buffer.readInt(), buffer.readBoolean());
-    }
-
-    @Override
-    public void write(FriendlyByteBuf pBuffer) {
-        pBuffer.writeInt(entityId);
-        pBuffer.writeBoolean(isRide);
-    }
+    public static final StreamCodec<FriendlyByteBuf, RidePack> STREAM_CODEC = StreamCodec.composite(
+            ByteBufCodecs.VAR_INT, RidePack::entityId,
+            ByteBufCodecs.BOOL, RidePack::isRide,
+            RidePack::new
+    );
 
     @Override
-    public ResourceLocation id() {
-        return ID;
+    public @NotNull Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public static void handle(RidePack ridePack, PlayPayloadContext ctx) {
-        if (ctx.player().isEmpty()) return;
+    public void handle(IPayloadContext ctx) {
 
-        ctx.workHandler().submitAsync(() -> {
-            Player playerEntity = ctx.player().get();
-            var broomEntity = (MajoBroomEntity) playerEntity.level().getEntity(ridePack.entityId);
+        ctx.enqueueWork(() -> {
+            Player player = ctx.player();
+            var broomEntity = (MajoBroomEntity) player.level().getEntity(entityId);
             if (broomEntity == null) return;
-            if (ridePack.isRide) {
-                playerEntity.startRiding(broomEntity);
+            if (isRide) {
+                player.startRiding(broomEntity);
             } else {
                 broomEntity.remove(Entity.RemovalReason.KILLED);
                 ItemStack itemStack = new ItemStack(ItemRegistry.broomItem.get());
 
-                itemStack.getOrCreateTag().putBoolean("controlMode", broomEntity.getControlMode());
-                if (!playerEntity.isCreative() && !playerEntity.getInventory().add(itemStack)) {
+                itemStack.getOrDefault(CONTROL_MODE,broomEntity.getControlMode());
+                if (!player.isCreative() && !player.getInventory().add(itemStack)) {
                     broomEntity.spawnAtLocation(broomEntity.getDropItem());
                 }
             }

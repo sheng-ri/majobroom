@@ -1,7 +1,6 @@
-package com.innky.majobroom.entity.renderer;
+package com.innky.majobroom;
 
-import com.innky.majobroom.entity.MajoBroomEntity;
-import com.innky.majobroom.entity.model.JsonBroomModel;
+import com.innky.majobroom.model.JsonBroomModel;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
@@ -38,10 +37,8 @@ public class BroomRenderer extends EntityRenderer<MajoBroomEntity> {
         matrixStackIn.pushPose();
         float fl = entityIn.getRealFl(partialTicks);
         matrixStackIn.translate(0, 0.1 * fl, 0);
-//        System.out.println(partialTicks);
         VertexConsumer iVertexBuilder = bufferIn.getBuffer(this.broomModel.renderType(this.getTextureLocation(entityIn)));
         broomModel.renderToBuffer(matrixStackIn, iVertexBuilder, packedLightIn, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
-        ;
         matrixStackIn.popPose();
         matrixStackIn.popPose();
     }

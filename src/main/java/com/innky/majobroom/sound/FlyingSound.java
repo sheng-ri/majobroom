@@ -1,6 +1,6 @@
 package com.innky.majobroom.sound;
 
-import com.innky.majobroom.entity.MajoBroomEntity;
+import com.innky.majobroom.MajoBroomEntity;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvents;

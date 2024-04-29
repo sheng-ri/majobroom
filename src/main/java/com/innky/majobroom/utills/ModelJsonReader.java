@@ -11,50 +11,21 @@ import java.io.InputStreamReader;
 
 public class ModelJsonReader {
     public static GeomtryBean readJson(String path) {
-//            URL a  = MajoBroom.class.getClassLoader().getResource("/assets/majobroom/textures/entity");
-//
-//            File file = new File(String.valueOf(a));
-//            String[] asa = file.list();
+        try (var in = ModelJsonReader.class.getResourceAsStream("/assets/majobroom/" + path + ".json");) {
 
-        try {
-//            InputStreamReader io = new InputStreamReader( Minecraft.getInstance()
-//                    .getResourceManager()
-//                    .getResource( new ResourceLocation( "majobroom", path ) )
-//                    .getInputStream());
-            InputStream in = ModelJsonReader.class.getResourceAsStream("/assets/majobroom/" + path + ".json");
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
+            var builder = new StringBuilder();
+            String temp;
 
-
-            if (in != null) {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in));
-                var builder = new StringBuilder();
-                String temp;
-
-                while ((temp = bufferedReader.readLine()) != null) {
-                    builder.append(temp);
-                }
-                String presonsString = builder.toString();
-                Gson gson = new Gson();
-                ModelBean fromJson = gson.fromJson(presonsString,
-                        ModelBean.class);
-
-                return fromJson.getModel();
+            while ((temp = bufferedReader.readLine()) != null) {
+                builder.append(temp);
             }
+            String presonsString = builder.toString();
+            Gson gson = new Gson();
+            ModelBean fromJson = gson.fromJson(presonsString,
+                    ModelBean.class);
 
-//        InputStream in = MajoBroom.class.getClassLoader().getResourceAsStream("/assets/majobroom/textures/entity/a.json");
-//        InputStreamReader io = new InputStreamReader(in);
-//        BufferedReader bufferedReader = new BufferedReader(io);
-//        StringBuffer stringBuffer = new StringBuffer();
-//        String temp = "";
-//
-//            while ((temp = bufferedReader.readLine()) != null) {
-//                stringBuffer.append(temp);
-//            }
-//            String presonsString = stringBuffer.toString();
-//            Gson gson = new Gson();
-//            ModelBean fromJson = gson.fromJson(presonsString,
-//                    ModelBean.class);
-//
-//            return fromJson.getModel();
+            return fromJson.getModel();
         } catch (IOException e) {
             e.printStackTrace();
         }

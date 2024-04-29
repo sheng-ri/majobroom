@@ -1,7 +1,7 @@
-package com.innky.majobroom.entity;
+package com.innky.majobroom;
 
 
-import com.innky.majobroom.armors.MajoWearableItem;
+import com.innky.majobroom.item.MajoWearableItem;
 import com.innky.majobroom.network.RidePack;
 import com.innky.majobroom.registry.ItemRegistry;
 import com.innky.majobroom.utills.Config;
@@ -59,14 +59,13 @@ public class MajoBroomEntity extends Boat {
     private static final EntityDataAccessor<Integer> configSpeed = SynchedEntityData.defineId(MajoBroomEntity.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Boolean> configAdvancedMode = SynchedEntityData.defineId(MajoBroomEntity.class, EntityDataSerializers.BOOLEAN);
 
-
     @Override
-    protected void defineSynchedData() {
-        this.entityData.define(controlMode, false);
-        this.entityData.define(playerLevel, 0);
-        this.entityData.define(configSpeed, 100);
-        this.entityData.define(configAdvancedMode, true);
-        super.defineSynchedData();
+    protected void defineSynchedData(SynchedEntityData.Builder builder) {
+        super.defineSynchedData(builder);
+        builder.define(controlMode, false);
+        builder.define(playerLevel, 0);
+        builder.define(configSpeed, 100);
+        builder.define(configAdvancedMode, true);
     }
 
     @Override
@@ -315,10 +314,7 @@ public class MajoBroomEntity extends Boat {
 //        collision();
 
 
-        if (!this.getPassengers().isEmpty()) {
-            Entity entity = this.getPassengers().get(0);
-
-
+        if (!getPassengers().isEmpty() && getPassengers().get(0) instanceof LivingEntity entity) {
             playerSpeed = (float) (0.98 - (0.7 / ((60 / 3) - 9)));
 
 
@@ -366,13 +362,13 @@ public class MajoBroomEntity extends Boat {
         passenger.setYBodyRot(this.yRot);
         return new Vec3(
                 this.getX(),
-                this.getY() + this.getMyRidingOffset(passenger) + passenger.getMyRidingOffset(passenger) + fl * 0.1,
+                this.getY() + getSinglePassengerXOffset() + fl * 0.1,
                 this.getZ());
     }
 
     @Override
-    public float getMyRidingOffset(Entity pEntity) {
-        return 1.3f;
+    protected float getSinglePassengerXOffset() {
+        return 0.7f;
     }
 
     @Override
@@ -381,13 +377,10 @@ public class MajoBroomEntity extends Boat {
             if (level().isClientSide) {
                 if (Minecraft.getInstance().player != null) {
                     if (Minecraft.getInstance().options.keyShift.isDown() && player.getUUID() == Minecraft.getInstance().player.getUUID()) {
-                        PacketDistributor.SERVER.noArg().send(new RidePack(this.getId(), false));
-                        this.level().playSound(player, player.blockPosition(), SoundEvents.ENDER_EYE_LAUNCH, SoundSource.NEUTRAL, 10F, 1f);
+                        PacketDistributor.sendToServer(new RidePack(this.getId(), false));
+                        level().playSound(player, player.blockPosition(), SoundEvents.ENDER_EYE_LAUNCH, SoundSource.NEUTRAL, 10F, 1f);
                         addParticle(this.level(), getX() - 0.5, getY() + 0.3, getZ() - 0.5, 30, 2, 1, ParticleTypes.SMOKE);
                     }
-//                    else {
-                        //                    Networking.INSTANCE.sendToServer(new ChangeBroomStatePack(this.getId(), true));
-//                    }
                 }
             }
 
@@ -429,7 +422,7 @@ public class MajoBroomEntity extends Boat {
                 hasPassenger = true;
                 if (this.getPassengers().isEmpty()) {
                     assert Minecraft.getInstance().player != null;
-                    PacketDistributor.SERVER.noArg().send(new RidePack(this.getId(), true));
+                    PacketDistributor.sendToServer(new RidePack(this.getId(), true));
 
                 }
             }

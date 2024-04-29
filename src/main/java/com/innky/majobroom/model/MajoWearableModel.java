@@ -1,4 +1,4 @@
-package com.innky.majobroom.armors;
+package com.innky.majobroom.model;
 
 import com.innky.majobroom.jsonbean.GeomtryBean;
 import com.innky.majobroom.utills.ModelJsonReader;

@@ -1,6 +1,6 @@
-package com.innky.majobroom.entity.model;
+package com.innky.majobroom.model;
 
-import com.innky.majobroom.entity.MajoBroomEntity;
+import com.innky.majobroom.MajoBroomEntity;
 import com.innky.majobroom.jsonbean.GeomtryBean;
 import com.innky.majobroom.utills.ModelJsonReader;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -59,11 +59,6 @@ public class JsonBroomModel extends EntityModel<MajoBroomEntity> {
 
         MeshDefinition modelData = new MeshDefinition();
         PartDefinition modelPartData = modelData.getRoot();
-//        modelPartData.addChild("sdasdsads", ModelPartBuilder.create().uv(0, 0).cuboid(-6F, 12F, -6F, 24F, 24F, 24F), ModelTransform.pivot(0F, 100F, 5F));
-//
-//        var another_cube = ModelPartBuilder.create().uv(0, 0).cuboid(-6F, 12F, -6F, 12F, 12F, 12F);
-//        modelPartData.getChild("sdasdsads").addChild("aaa",another_cube,ModelTransform.pivot(0F, 1F, 1F));
-
 
         if (model != null) {
 

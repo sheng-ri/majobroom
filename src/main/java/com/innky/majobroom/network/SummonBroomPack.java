@@ -1,40 +1,35 @@
 package com.innky.majobroom.network;
 
 import com.innky.majobroom.ModMajoBroom;
-import com.innky.majobroom.entity.MajoBroomEntity;
+import com.innky.majobroom.MajoBroomEntity;
 import com.innky.majobroom.registry.EntityTypeRegistry;
 import com.innky.majobroom.registry.ItemRegistry;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+
+import static com.innky.majobroom.registry.ComponentsRegistry.CONTROL_MODE;
 
 public record SummonBroomPack() implements CustomPacketPayload {
 
-    static final ResourceLocation ID = new ResourceLocation(ModMajoBroom.MODID, "summon_broom");
+    public static final Type<SummonBroomPack> TYPE = new Type<>(new ResourceLocation(ModMajoBroom.MODID, "summon_broom"));
 
-    public SummonBroomPack(FriendlyByteBuf buf) {
-        this();
-    }
-
-    @Override
-    public void write(FriendlyByteBuf pBuffer) {
-
-    }
+    public static final SummonBroomPack INSTANCE = new SummonBroomPack();
+    public static final StreamCodec<FriendlyByteBuf, SummonBroomPack> STREAM_CODEC = StreamCodec.unit(INSTANCE);
 
     @Override
-    public ResourceLocation id() {
-        return ID;
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
     }
 
-    public static void handle(SummonBroomPack summonBroomPack, PlayPayloadContext ctx) {
-        if (ctx.player().isEmpty()) return;
-
+    public void handle(IPayloadContext ctx) {
         // main thread
-        ctx.workHandler().submitAsync(() -> {
-            final var player = ctx.player().get();
+        ctx.enqueueWork(() -> {
+            final var player = ctx.player();
             if (!player.isPassenger()) {
                 for (ItemStack item : player.getInventory().items) {
                     if (item.is(ItemRegistry.broomItem.get()) || player.isCreative()) {
@@ -46,17 +41,16 @@ public record SummonBroomPack() implements CustomPacketPayload {
         });
     }
 
-    private static void summonBroom(Player playerEntity, ItemStack itemStack) {
-        MajoBroomEntity broomEntity = new MajoBroomEntity(EntityTypeRegistry.majoBroom.get(), playerEntity.level());
+    private static void summonBroom(Player player, ItemStack itemStack) {
+        MajoBroomEntity broomEntity = new MajoBroomEntity(EntityTypeRegistry.majoBroom.get(), player.level());
 //        broomEntity.setYHeadRot(playerEntity.getYHeadRot());
-        broomEntity.setYRot(playerEntity.getYRot());
-        broomEntity.setPos(playerEntity.getX(), playerEntity.getY(), playerEntity.getZ());
-        broomEntity.setControlMode(itemStack.getOrCreateTag().getBoolean("controlMode"));
-        playerEntity.level().addFreshEntity(broomEntity);
-        if (!playerEntity.isCreative()) {
+        broomEntity.setYRot(player.getYRot());
+        broomEntity.setPos(player.getX(), player.getY(), player.getZ());
+        broomEntity.setControlMode(itemStack.getOrDefault(CONTROL_MODE,false));
+        player.level().addFreshEntity(broomEntity);
+        if (!player.isCreative()) {
             itemStack.shrink(1);
         }
-        playerEntity.startRiding(broomEntity);
-
+        player.startRiding(broomEntity);
     }
 }
