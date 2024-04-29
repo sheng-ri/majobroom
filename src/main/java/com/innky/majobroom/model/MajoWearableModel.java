@@ -20,67 +20,14 @@ public class MajoWearableModel extends HumanoidModel<LivingEntity> {
     private final HashMap<String, GeomtryBean.BonesBean> bonesBean;*/
     public final ModelPart base;
     private final String model_name;
-    private final Map<String, PartDefinition> bones = new HashMap();
-    private final Map<String, GeomtryBean.BonesBean> bonesBean = new HashMap();
+    private final Map<String, PartDefinition> bones = new HashMap<>();
+    private final Map<String, GeomtryBean.BonesBean> bonesBean = new HashMap<>();
 
 
     public MajoWearableModel(String name) {
         super(HumanoidModel.createMesh(CubeDeformation.NONE, 0f).getRoot().bake(256, 256));
         this.base = getTexturedModelData(name).bakeRoot();
         this.model_name = name;
-
-        /*CubeListBuilder a = CubeListBuilder.create();
-
-        base = new ModelPart(this);
-        bones = new HashMap<String, ModelPart>();
-        bonesBean = new HashMap<String, GeomtryBean.BonesBean>();
-
-        GeomtryBean model = ModelJsonReader.readJson("jsonmodels/" + name + ".json");
-        if (model != null) {
-            textureHeight = model.getTextureheight();
-            textureWidth = model.getTexturewidth();
-
-            for (GeomtryBean.BonesBean bone : model.getBones()) {
-                ModelPart newBone = new ModelPart(this);
-                if (bone.getParent() != null) {
-                    GeomtryBean.BonesBean parent = bonesBean.get(bone.getParent());
-                    newBone.setRotationPoint(bone.getPivot().get(0) - parent.getPivot().get(0), parent.getPivot().get(1) - bone.getPivot().get(1), bone.getPivot().get(2) - parent.getPivot().get(2));
-                    bones.get(bone.getParent()).addChild(newBone);
-                } else {
-                    newBone.setRotationPoint(bone.getPivot().get(0), 24 - bone.getPivot().get(1), bone.getPivot().get(2));
-                    if ("hide".equals(bone.getName())) {
-
-                    } else {
-                        base.addChild(newBone);
-                    }
-                }
-                if (bone.getRotation() != null) {
-                    setRotationAngle(newBone, 0.017453f * bone.getRotation().get(0), 0.017453f * bone.getRotation().get(1), 0.017453f * bone.getRotation().get(2));
-                }
-                if (bone.getCubes() != null) {
-                    for (GeomtryBean.BonesBean.CubesBean cube : bone.getCubes()) {
-
-
-                        newBone.setTextureOffset(cube.getUv().get(0), cube.getUv().get(1)).addBox(convertOrigin(bone, cube, 0), convertOrigin(bone, cube, 1), convertOrigin(bone, cube, 2),
-                                cube.getSize().get(0), cube.getSize().get(1), cube.getSize().get(2), cube.getInflate(), false);
-
-
-                    }
-                }
-
-                bones.put(bone.getName(), newBone);
-                bonesBean.put(bone.getName(), bone);
-            }
-//            this.bipedHeadwear = bone18;
-//            this.bipedHead = bone18;
-            if (bones.get("bigBody") == null) {
-                this.bipedHead = base;
-            } else {
-                this.bipedRightArm = bones.get("left");
-                this.bipedLeftArm = bones.get("right");
-                this.bipedBody = bones.get("epic");
-            }
-        }*/
     }
 
     private float convertOrigin(GeomtryBean.BonesBean bones, GeomtryBean.BonesBean.CubesBean cubes, int index) {
@@ -94,31 +41,6 @@ public class MajoWearableModel extends HumanoidModel<LivingEntity> {
 
     @Override
     public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer buffer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-//        System.out.println(model_name+" is Rendering!!!");
-      /*  if (bones.get("bigBody") == null) {
-            base.copyModelAngles(this.bipedHead);
-        } else {
-//            bones.get("left").copyModelAngles(this.bipedRightArm);
-//            bones.get("right").copyModelAngles(this.bipedLeftArm);
-            bones.get("bigBody").copyModelAngles(this.bipedBody);
-            ModelPart dress = bones.get("dress");
-            dress.rotateAngleX = (this.bipedLeftLeg.rotateAngleX + this.bipedRightLeg.rotateAngleX) / 2;
-            dress.rotationPointZ = this.bipedLeftLeg.rotationPointZ;
-
-            if (this.isSitting) {
-                dress.rotationPointY = 10;
-                dress.rotateAngleX = -1.04f;
-                bones.get("sithide1").showModel = false;
-                bones.get("sithide2").showModel = false;
-            } else {
-                dress.rotationPointY = 10;
-                bones.get("sithide1").showModel = true;
-                bones.get("sithide2").showModel = true;
-
-            }
-        }
-        base.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);*/
-        System.out.println("Red: " + red);
         switch (model_name) {
             case "majo_hat" -> this.base.copyFrom(this.head);
             case "majo_cloth" -> {

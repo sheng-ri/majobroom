@@ -17,7 +17,8 @@ import static com.innky.majobroom.item.ModArmorMaterial.CLOTH;
 public class MajoWearableItem extends ArmorItem {
 
     public MajoWearableItem(Type p_266831_ ) {
-        super(CLOTH, p_266831_, new Properties().durability(ArmorItem.Type.LEGGINGS.getDurability(40)));
+        super(CLOTH, p_266831_, new Properties()
+                .durability(ArmorItem.Type.LEGGINGS.getDurability(40)));
     }
 
 //    @Override

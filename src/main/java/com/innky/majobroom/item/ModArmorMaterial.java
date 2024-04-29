@@ -52,8 +52,8 @@ public class ModArmorMaterial {
                 BuiltInRegistries.ARMOR_MATERIAL,
                 new ResourceLocation(name),
                 new ArmorMaterial(enummap, p_324319_, p_324145_, p_323845_, List.of(
-                        new ArmorMaterial.Layer(new ResourceLocation("leather"), "", true)
-//                        new ArmorMaterial.Layer(new ResourceLocation("leather"), "_overlay", false)
+                        new ArmorMaterial.Layer(new ResourceLocation("leather"), "", false)
+//                        , new ArmorMaterial.Layer(new ResourceLocation("leather"), "_overlay", false)
                 ), p_323494_, p_324549_)
         );
     }
