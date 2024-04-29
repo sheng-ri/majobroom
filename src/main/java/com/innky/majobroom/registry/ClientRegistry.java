@@ -1,7 +1,7 @@
 package com.innky.majobroom.registry;
 
-import com.innky.majobroom.item.MajoWearableItem;
 import com.innky.majobroom.BroomRenderer;
+import net.minecraft.world.item.component.DyedItemColor;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -10,17 +10,17 @@ import net.neoforged.neoforge.client.event.RegisterColorHandlersEvent;
 
 @SuppressWarnings("unused")
 @EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public class ClientEventRegistry {
+public class ClientRegistry {
     @SubscribeEvent
     public static void onClientSetUpEvent(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityTypeRegistry.majoBroom.get(), BroomRenderer::new);
     }
 
     @SubscribeEvent
-
     public static void onClientSetUpEvent(RegisterColorHandlersEvent.Item event) {
-        event.register((stack, color) ->
-                        color > 0 ? -1 : ((MajoWearableItem) stack.getItem()).getColor(stack),
-                ItemRegistry.itemMap.get("majo_hat").get());
+        // Now don't need because dye components?
+        event.register(
+                (stack, color) -> color > 0 ? -1 : DyedItemColor.getOrDefault(stack,0xdda3c7),
+                ItemRegistry.HAT);
     }
 }

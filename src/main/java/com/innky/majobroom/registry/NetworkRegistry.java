@@ -1,11 +1,13 @@
-package com.innky.majobroom.network;
+package com.innky.majobroom.registry;
 
 import com.innky.majobroom.ModMajoBroom;
+import com.innky.majobroom.network.RidePack;
+import com.innky.majobroom.network.SummonBroomPack;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
 
 @SuppressWarnings("unused")
-public class Network {
+public class NetworkRegistry {
 
     @SubscribeEvent
     public static void register(final RegisterPayloadHandlersEvent event) {

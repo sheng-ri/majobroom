@@ -1,7 +1,7 @@
 package com.innky.majobroom;
 
-import com.innky.majobroom.network.Network;
-import com.innky.majobroom.registry.ComponentsRegistry;
+import com.innky.majobroom.registry.NetworkRegistry;
+import com.innky.majobroom.registry.ComponentRegistry;
 import com.innky.majobroom.registry.EntityTypeRegistry;
 import com.innky.majobroom.registry.ItemRegistry;
 import com.innky.majobroom.registry.KeyboardRegistry;
@@ -26,9 +26,9 @@ public class ModMajoBroom {
 
         ItemRegistry.register(eventBus);
         EntityTypeRegistry.register(eventBus);
-        ComponentsRegistry.register(eventBus);
+        ComponentRegistry.register(eventBus);
 
-        eventBus.register(Network.class);
+        eventBus.register(NetworkRegistry.class);
         eventBus.register(KeyboardRegistry.class);
     }
 }

@@ -12,7 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
-import static com.innky.majobroom.registry.ComponentsRegistry.CONTROL_MODE;
+import static com.innky.majobroom.registry.ComponentRegistry.CONTROL_MODE;
 
 public record SummonBroomPack() implements CustomPacketPayload {
 

@@ -33,8 +33,8 @@ public class ModArmorMaterial {
             0.0F,
             () -> Ingredient.of(ItemRegistry.broomItem.get()),
             List.of(
-                    new ArmorMaterial.Layer(new ResourceLocation("leather"), "", true),
-                    new ArmorMaterial.Layer(new ResourceLocation("leather"), "_overlay", false)
+                    new ArmorMaterial.Layer(new ResourceLocation("majo"), "", true),
+                    new ArmorMaterial.Layer(new ResourceLocation("majo"), "_overlay", false)
             ));
 
     private static Holder<ArmorMaterial> register(

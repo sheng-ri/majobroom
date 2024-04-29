@@ -7,7 +7,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
-public class ComponentsRegistry {
+public class ComponentRegistry {
 
     public static final DeferredRegister.DataComponents MAJO_COMPOENTS = DeferredRegister.createDataComponents(ModMajoBroom.MODID);
 

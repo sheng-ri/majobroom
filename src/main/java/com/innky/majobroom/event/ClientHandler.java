@@ -1,7 +1,7 @@
 package com.innky.majobroom.event;
 
 import com.innky.majobroom.MajoBroomEntity;
-import com.innky.majobroom.sound.FlyingSound;
+import com.innky.majobroom.FlyingSound;
 import com.innky.majobroom.utills.Config;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;

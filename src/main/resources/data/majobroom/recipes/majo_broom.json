@@ -20,7 +20,7 @@
     }
   },
   "result": {
-    "item": "majobroom:broom_item",
+    "id": "majobroom:broom_item",
     "count": 1
   }
 }

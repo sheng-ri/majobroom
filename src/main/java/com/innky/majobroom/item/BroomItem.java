@@ -19,7 +19,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 
-import static com.innky.majobroom.registry.ComponentsRegistry.CONTROL_MODE;
+import static com.innky.majobroom.registry.ComponentRegistry.CONTROL_MODE;
 
 public class BroomItem extends Item {
 
