@@ -31,11 +31,7 @@ public class ModArmorMaterial {
             SoundEvents.ARMOR_EQUIP_LEATHER,
             0.0F,
             0.0F,
-            () -> Ingredient.of(ItemRegistry.broomItem.get()),
-            List.of(
-                    new ArmorMaterial.Layer(new ResourceLocation("majo"), "", true),
-                    new ArmorMaterial.Layer(new ResourceLocation("majo"), "_overlay", false)
-            ));
+            () -> Ingredient.of(ItemRegistry.broomItem.get()));
 
     private static Holder<ArmorMaterial> register(
             String name,
@@ -44,8 +40,7 @@ public class ModArmorMaterial {
             Holder<SoundEvent> p_324145_,
             float p_323494_,
             float p_324549_,
-            Supplier<Ingredient> p_323845_,
-            List<ArmorMaterial.Layer> p_323990_
+            Supplier<Ingredient> p_323845_
     ) {
         EnumMap<ArmorItem.Type, Integer> enummap = new EnumMap<>(ArmorItem.Type.class);
 
@@ -56,7 +51,10 @@ public class ModArmorMaterial {
         return Registry.registerForHolder(
                 BuiltInRegistries.ARMOR_MATERIAL,
                 new ResourceLocation(name),
-                new ArmorMaterial(enummap, p_324319_, p_324145_, p_323845_, p_323990_, p_323494_, p_324549_)
+                new ArmorMaterial(enummap, p_324319_, p_324145_, p_323845_, List.of(
+                        new ArmorMaterial.Layer(new ResourceLocation("leather"), "", true)
+//                        new ArmorMaterial.Layer(new ResourceLocation("leather"), "_overlay", false)
+                ), p_323494_, p_324549_)
         );
     }
 }

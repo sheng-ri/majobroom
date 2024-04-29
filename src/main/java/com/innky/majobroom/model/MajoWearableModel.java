@@ -118,6 +118,7 @@ public class MajoWearableModel extends HumanoidModel<LivingEntity> {
             }
         }
         base.render(poseStack, buffer, packedLight, packedOverlay, red, green, blue, alpha);*/
+        System.out.println("Red: " + red);
         switch (model_name) {
             case "majo_hat" -> this.base.copyFrom(this.head);
             case "majo_cloth" -> {
