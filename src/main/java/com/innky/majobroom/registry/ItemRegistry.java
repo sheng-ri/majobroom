@@ -37,6 +37,7 @@ public class ItemRegistry {
         broomItem = ITEMS.register("broom_item", () ->
                 new BroomItem(new Item.Properties())
         );
+        itemMap.put("majobroom",broomItem);
         boolean isRemote = true;
         try {
             System.out.println(HumanoidModel.class);
@@ -71,8 +72,8 @@ public class ItemRegistry {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        MOD_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
-                .title(Component.translatable("itemGroup.examplemod")) //The language key for the title of your CreativeModeTab
+        MOD_TAB = CREATIVE_MODE_TABS.register("majo_group", () -> CreativeModeTab.builder()
+                .title(Component.translatable("itemGroup.majo_group")) //The language key for the title of your CreativeModeTab
                 .withTabsBefore(CreativeModeTabs.COMBAT)
                 .icon(() -> ItemRegistry.broomItem.get().getDefaultInstance())
                 .displayItems((parameters, output) -> {
@@ -80,6 +81,7 @@ public class ItemRegistry {
                         output.accept(holder.get());
                     }
                 }).build());
+        CREATIVE_MODE_TABS.register(eventBus);
         ITEMS.register(eventBus);
     }
 }
