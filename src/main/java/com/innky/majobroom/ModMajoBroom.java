@@ -18,7 +18,7 @@ import org.slf4j.Logger;
 public class ModMajoBroom {
 
     public static final String MODID = "majobroom";
-    public static final String VERSION = "2.0.2";
+    public static String VERSION = "1.0";
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public ModMajoBroom(IEventBus eventBus, ModContainer modContainer) {
