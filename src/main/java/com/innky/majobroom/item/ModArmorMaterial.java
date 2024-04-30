@@ -34,27 +34,27 @@ public class ModArmorMaterial {
             () -> Ingredient.of(ItemRegistry.broomItem.get()));
 
     private static Holder<ArmorMaterial> register(
-            String name,
-            EnumMap<ArmorItem.Type, Integer> p_324599_,
-            int p_324319_,
-            Holder<SoundEvent> p_324145_,
-            float p_323494_,
-            float p_324549_,
-            Supplier<Ingredient> p_323845_
+            String pName,
+            EnumMap<ArmorItem.Type, Integer> pDefense,
+            int pEnchantmentValue,
+            Holder<SoundEvent> pEquipSound,
+            float pToughness,
+            float pKnockbackResistance,
+            Supplier<Ingredient> pRepairIngridient
     ) {
         EnumMap<ArmorItem.Type, Integer> enummap = new EnumMap<>(ArmorItem.Type.class);
 
         for (ArmorItem.Type armoritem$type : ArmorItem.Type.values()) {
-            enummap.put(armoritem$type, p_324599_.get(armoritem$type));
+            enummap.put(armoritem$type, pDefense.get(armoritem$type));
         }
 
         return Registry.registerForHolder(
                 BuiltInRegistries.ARMOR_MATERIAL,
-                new ResourceLocation(name),
-                new ArmorMaterial(enummap, p_324319_, p_324145_, p_323845_, List.of(
-                        new ArmorMaterial.Layer(new ResourceLocation("leather"), "", false)
-//                        , new ArmorMaterial.Layer(new ResourceLocation("leather"), "_overlay", false)
-                ), p_323494_, p_324549_)
+                new ResourceLocation(pName),
+                new ArmorMaterial(enummap, pEnchantmentValue, pEquipSound, pRepairIngridient, List.of(
+                        new ArmorMaterial.Layer(new ResourceLocation("leather"), "", true)
+                        , new ArmorMaterial.Layer(new ResourceLocation("leather"), "_overlay", false)
+                ), pToughness, pKnockbackResistance)
         );
     }
 }
